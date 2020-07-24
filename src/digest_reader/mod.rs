@@ -8,12 +8,12 @@ pub trait DigestReader: digest::Digest {
         let mut buffer = [0u8; HASH_BLOCK_SIZE];
         loop {
             let nb_bytes_read = source.read(&mut buffer)?;
-            self.input(&buffer[..nb_bytes_read]);
+            self.update(&buffer[..nb_bytes_read]);
             if nb_bytes_read == 0 {
                 break;
             }
         }
-        Ok(self.result_reset())
+        Ok(self.finalize_reset())
     }
 }
 impl<D: digest::Digest> DigestReader for D {}
